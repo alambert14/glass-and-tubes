@@ -84,15 +84,18 @@ def main():
 			segInEdge.append(segment)
 			print("segInEdge")
 			print(segInEdge)
-			if(check_intersect(segment.get_tuple(), graveyard)):
-				print("intersect")
-				edgeInLoop.append(segInEdge)
-				segInEdge = []
 
+			for loop in graveyard:
+				for edge in loop:
+					for graveSeg in edge:
+						s1 = Segment((graveSeg[0][0], graveSeg[0][1]),(graveSeg[1][0], graveSeg[1][1]))
+						if(segment.intersects(s1)):
+							edgeInLoop.append(segInEdge)
+							segInEdge = []
 
 		current = Loop(edgeInLoop)
 		print("current:")
-		print(current.get_list())
+		#print(current.get_list())
 		graveyard.append(previous.get_list())
 		previous = current
 		print("previous:")
