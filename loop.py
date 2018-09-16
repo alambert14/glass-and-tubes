@@ -8,6 +8,6 @@ class Loop:
 			
 	def get_list(self):
 		return_list = []
-		for edge in edges:
-			return_list.append(edge.get_list)
+		for edge in self.edges:
+			return_list.append(edge.get_list())
 		return return_list
