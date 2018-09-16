@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 
 from random import randint
+import loop.py
+import edge.py
+import segment.py
+import grid.py
 
 n = 0
 max_n = 5
 
-current_loop = []
-last_loop = []
-graveyard=[]
+current_loop = None
+last_loop = None
+graveyard = []
 
 h = 512
 w = 512
@@ -19,7 +23,7 @@ while(n < 100):
 	#L2 just the last loop: [edges[segments(p1,p2)]]
 	#L3 current loop: [edges[segments(p1,p2)]]
 
-	if n==0:
+	if n == 0:
 		current_loop = Loop()
 		current_loop.edges.append(Edge())
 		current_loop.edges[0].segments.append(Segment(((w/2-init_sq_size/2),(h/2-init_sq_size/2)),((w/2+init_sq_size/2),(h/2-init_sq_size/2)))) #top
@@ -30,23 +34,28 @@ while(n < 100):
 		graveyard.append(current_loop)
 
 	else:
+		crossed_segment = last_loop.edges[0].segments[0]
+		#tuple for point where it bisects
+		bisect = crossed_segment.bisection()
 
-		#pick an edge and find the middle of it
-		crossed_segment = last_loop[0][0]
-		horizontal = True
-		#if x values are the different then true, if x values are the same then false
-		if crossed_segment[0][0] == crossed_segment[1][0]:
-			horizontal = False
-		
-		bisect = 0
-		if horizontal:
-			bisect = ((crossed_segment[0][0]+crossed_segment[1][0])/2),crossed_segment[0][1])
-			segment  = find_path(bisect,last_loop)
+		segment  = find_path(bisect,last_loop)
 			#path is a list of segments
 
-		else:
-			bisect = ((crossed_segment[0][1]+crossed_segment[1][1])/2),crossed_segment[0][0])
 
+#input:
+#starting point, list of nodes to hit
+#output:
+#list of segments (or new edges)
+def find_path(start_pt, nodes):
+	list_of_segments = []
+	current_pt = start_pt
+	for node in nodes:
+		list_of_segments.append(Segment(current_pt,(current_pt[0],node[1])))
+		list_of_segments.append(Segment((current_pt[0],node[1]), node))
+		current_pt = node
+	list_of_segments.append(Segment(current_pt,(current_pt[0],start_pt[1])))
+	list_of_segments.append(Segment((current_pt[0],start_pt[1]), start_pt))
+	return list_of_segment
 
 
 

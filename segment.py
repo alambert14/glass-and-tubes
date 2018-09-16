@@ -18,7 +18,7 @@ class Segment:
 		if self.horizontal():
 			return ((self.p1[0]+self.p2[0])/2,self.p1[1])
 	
-	def getTuple(self):
+	def get_tuple(self):
 		return (p1,p2)
 
 
