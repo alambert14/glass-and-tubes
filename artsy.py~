@@ -80,8 +80,6 @@ def main():
 		previous = current
 	graveyard.append(current.get_list())
 
-	#trying to rewrite in 
-
 	
 	####Graohics
 	maxThickness = 50

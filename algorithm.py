@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
 from random import randint
+from graphics import *
 from loop import *
 from edge import *
 from segment import *
 from grid import *
+
 
 
 #input:
@@ -20,10 +22,55 @@ def find_path(start_pt, nodes):
 		new_edge.add_segment(Segment(current_pt,(current_pt[0],node[1])))
 		new_edge.add_segment(Segment((current_pt[0],node[1]), node))
 		current_pt = node
+		list_of_edges.append(new_edge)
 	list_of_edges[0].add_segment(Segment(current_pt,(current_pt[0],start_pt[1])))
-	list_of_edges[0].add_segment(append(Segment((current_pt[0],start_pt[1]), start_pt))
-    return_loop = Loop(list_of_edges)
+	list_of_edges[0].add_segment(Segment((current_pt[0],start_pt[1]), start_pt))
+	return_loop = Loop()
+	return_loop.egdes = list_of_edges
 	return return_loop
+
+def draw_segments(segs):
+	####Graohics
+	maxThickness = 50
+	outlineThicknessRatio = 5
+	#loopNum = randint(1, 100)
+	loopEdges = 7
+
+	frame = 0
+	for loop in graveyard:
+		frame+=1
+		for edge in loop:
+			for drawSeg in edge:
+				#thickness = maxThickness-int(frame*(maxThickness/loopNum))
+				thickness = 10
+				
+				x1 = drawSeg[0][0]
+				y1 = drawSeg[0][1]
+				x2 = drawSeg[1][0]
+				y2 = drawSeg[1][1]
+				if(x1 == x2):
+					if(y1 > y2):
+						y2+=thickness/2
+						y1-=thickness/2
+					else:
+						y1+=thickness/2
+						y2+=thickness/2
+				else:
+					if(x1>x2):
+						x1+=thickness/2
+						x2-=thickness/2
+					else:
+						x1-=thickness/2
+						x2+=thickness/2
+				curve = Line(Point(x1, y1), Point(x2, y2))
+				#thickness = int(frame*(maxThickness/loopNum))
+				curve.setWidth(thickness)
+				#curve.setFill(color_rgb(int(frame*(255/loopNum)), 0, 255-int(frame*(255/(2*loopNum)))))
+				curve.setFill(color_rgb(int(frame*(255/(loopNum+int(loopNum/10)))), 0, 255-int(frame*(255/(loopNum+int(loopNum/10))))))
+				curve.draw(win)
+				time.sleep(1)
+				win.flush()
+
 
 n = 0
 max_n = 5
@@ -51,30 +98,25 @@ while(n < 100):
 		current_loop.edges[0].add_segment(Segment(((w/2+init_sq_size/2),(h/2+init_sq_size/2)),((w/2+init_sq_size/2),(h/2-init_sq_size/2)))) #right
 		last_loop = current_loop
 
-		for edge in current_loop.edges:
-			for seg in edge.segments:
-				graveyard.append(seg)
+		graveyard.append()
 
 	else:
 		#a list of points
 		nodes = []
-		for edge in previous_loop.edges:
-			nodes.append(edge.segments[0].bisection()
+		for edge in last_loop.edges:
+			nodes.append(edge.segments[0].bisection())
 		
-		current_loop = find_path((randint(0,w),randint(0,h))
+		current_loop = find_path((randint(0,w),randint(0,h)),nodes)
 		
-		for edge in previous_loop.edges:
+		for edge in last_loop.edges:
 			for seg in edge.segments:
 				graveyard.append(seg)
-		previous_loop = current_loop
+		last_loop = current_loop
 		
-
-print(graveyard)
-		
+	n += 1
 
 
-def draw_segments(segs):
-	
+
 
 
 
