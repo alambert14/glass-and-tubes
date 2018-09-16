@@ -22,8 +22,7 @@ def find_path(start_pt, nodes):
 		current_pt = node
 	list_of_edges[0].add_segment(Segment(current_pt,(current_pt[0],start_pt[1])))
 	list_of_edges[0].add_segment(append(Segment((current_pt[0],start_pt[1]), start_pt))
-    return_loop = Loop(list_of_edges)
-	return return_loop
+	return Loop(list_of_edges)
 
 n = 0
 max_n = 5
