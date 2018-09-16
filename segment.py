@@ -21,10 +21,4 @@ class Segment:
 			return (self.p1[0], (self.p1[1]+self.p2[1])/2)
 	
 	def get_tuple(self):
-<<<<<<< HEAD
 		return (self.p1,self.p2)
-=======
-		return (p1,p2)
-
-
->>>>>>> acdf585b0c17a879537fd4775996823efd094f5d
