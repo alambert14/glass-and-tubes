@@ -52,7 +52,7 @@ def main():
 	graveyard.append(loop1)
 	previous = loop1
 
-	loopNum = 7
+	loopNum = 6
 
 	for f in range(loopNum):
 		nodes = []
@@ -112,6 +112,7 @@ def main():
 	for loop in graveyard:
 		frame+=1
 		print(frame)
+		length = len(loop.edges)
 		for edge in loop.edges:
 			for drawSeg in edge.segments:
 				#thickness = maxThickness-int(frame*(maxThickness/loopNum))
@@ -138,8 +139,18 @@ def main():
 				curve = Line(Point(x1, y1), Point(x2, y2))
 				#thickness = int(frame*(maxThickness/loopNum))
 				curve.setWidth(thickness)
-				#curve.setFill(color_rgb(int(frame*(255/loopNum)), 0, 255-int(frame*(255/(loopNum)))))
-				curve.setFill('red')
+				red = int(frame*(255/loopNum))
+				blue = 255-int(frame*(255/(loopNum)))
+				if(red < 0):
+					red = 0
+				if(red > 255):
+					red = 255
+				if(blue < 0):
+					blue = 0
+				if(blue > 255):
+					blue = 255
+				curve.setFill(color_rgb(red, 0, blue))
+				#curve.setFill('red')
 				#curve.setFill(color_rgb(int(frame*(255/(loopNum+int(loopNum/10)))), 0, 255-int(frame*(255/(loopNum+int(loopNum/10))))))
 				#curve.setFill(color_rgb(randint(0,255), randint(0,255),randint(0,255)))
 				curve.draw(win)
@@ -150,7 +161,7 @@ def main():
 		#	item.undraw()
 
 	print("Done")
-
+	time.sleep(1000)
 	win.getMouse()
 	win.close()
 
