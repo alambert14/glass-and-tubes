@@ -56,40 +56,58 @@ def main():
 
 	for f in range(loopNum):
 		nodes = []
+		print('nodes: ')
+		print(nodes)
 		edgeList = previous.get_list()
+		print('edgeList: ')
+		print(edgeList)
 		for i in range(len(edgeList)):
 			#Can make random later
 			seg = edgeList[i][0]
+			print('seg')
+			print(seg)
 			middle = Segment(seg[0], seg[1]).bisection()
 			nodes.append(middle)
+		print('nodes: ')
+		print(nodes)
 
 		###Path
 		x1 = randint(0, xWidth)
 		y1 = randint(0, yWidth)
 		segList = find_path((x1, y1), nodes)
+		print("segList:")
+		print(segList)
 
 		segInEdge = []
 		edgeInLoop = []
 		for segment in segList:
 			segInEdge.append(segment)
+			print("segInEdge")
+			print(segInEdge)
 			if(check_intersect(segment.get_tuple(), graveyard)):
+				print("intersect")
 				edgeInLoop.append(segInEdge)
 				segInEdge = []
+
+
 		current = Loop(edgeInLoop)
+		print("current:")
+		print(current.get_list())
 		graveyard.append(previous.get_list())
 		previous = current
+		print("previous:")
+		print(previous.get_list())
 	graveyard.append(current.get_list())
-
 	
 	####Graohics
-	maxThickness = 50
-	outlineThicknessRatio = 5
+	#maxThickness = 50
+	#outlineThicknessRatio = 5
 	#loopNum = randint(1, 100)
-	loopEdges = 7
 
 	frame = 0
 	for loop in graveyard:
 		frame+=1
+		print(frame)
 		for edge in loop:
 			for drawSeg in edge:
 				#thickness = maxThickness-int(frame*(maxThickness/loopNum))
@@ -117,7 +135,8 @@ def main():
 				#thickness = int(frame*(maxThickness/loopNum))
 				curve.setWidth(thickness)
 				#curve.setFill(color_rgb(int(frame*(255/loopNum)), 0, 255-int(frame*(255/(2*loopNum)))))
-				curve.setFill(color_rgb(int(frame*(255/(loopNum+int(loopNum/10)))), 0, 255-int(frame*(255/(loopNum+int(loopNum/10))))))
+				#curve.setFill(color_rgb(int(frame*(255/(loopNum+int(loopNum/10)))), 0, 255-int(frame*(255/(loopNum+int(loopNum/10))))))
+				curve.setFill(color_rgb(randint(0,255), randint(0,255),randint(0,255)))
 				curve.draw(win)
 				time.sleep(1)
 				win.flush()
@@ -125,6 +144,8 @@ def main():
 		#time.sleep(0.5)
 		#for item in win.items[:]:
 		#	item.undraw()
+
+	print("Done")
 
 	win.getMouse()
 	win.close()
@@ -157,13 +178,14 @@ def check_intersect(segment, graveyard):
 				else:
 					graveSegHoriz = False
 				if(segmentHoriz and not graveSegHoriz):
-					if((segment[0][1] < graveSeg[0][1] and segment[0][1] > graveSeg[1][1]) or (segment[0][1] > graveSeg[0][1] and segment[0][1] < graveSeg[1][1])):
-						if((graveSeg[0][0] < segment[0][0] and graveSeg[0][0] > segment[1][0]) or (graveSeg[0][0] > segment[0][0] and graveSeg[0][0] < segment[1][0])):
+					if((segment[0][1] <= graveSeg[0][1] and segment[0][1] >= graveSeg[1][1]) or (segment[0][1] >= graveSeg[0][1] and segment[0][1] <= graveSeg[1][1])):
+						if((graveSeg[0][0] <= segment[0][0] and graveSeg[0][0] >= segment[1][0]) or (graveSeg[0][0] >= segment[0][0] and graveSeg[0][0] <= segment[1][0])):
 							return True
 				if(not segmentHoriz and graveSegHoriz):
-					if((segment[0][0] < graveSeg[0][0] and segment[0][0] > graveSeg[1][0]) or (segment[0][0] > graveSeg[0][0] and segment[0][0] < graveSeg[1][0])):
-						if((graveSeg[0][1] < segment[0][1] and graveSeg[0][1] > segment[1][1]) or (graveSeg[0][1] > segment[0][1] and graveSeg[0][1] < segment[1][1])):
+					if((segment[0][0] <= graveSeg[0][0] and segment[0][0] >= graveSeg[1][0]) or (segment[0][0] >= graveSeg[0][0] and segment[0][0] <= graveSeg[1][0])):
+						if((graveSeg[0][1] <= segment[0][1] and graveSeg[0][1] >= segment[1][1]) or (graveSeg[0][1] >= segment[0][1] and graveSeg[0][1] <= segment[1][1])):
 							return True
+	print("No Intersect")
 	return False
 
 
